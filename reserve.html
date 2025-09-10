@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🎟 رزرو بلیط برای {{ movie.title }}</title>
+
+  <!-- فونت فارسی Vazirmatn -->
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.2.0/dist/font-face.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #00b894;
+      --accent: #6c5ce7;
+      --taken: #b2bec3;
+      --bg-start: #f5f7fa;
+      --bg-end: #c3cfe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Vazirmatn', sans-serif;
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      color: #333;
+      text-align: center;
+    }
+    .container {
+      max-width: 640px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px;
+      background: var(--primary);
+      color: #fff;
+    }
+    header h2 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: 1px;
+    }
+    .screen {
+      margin: 24px auto;
+      width: 80%;
+      height: 40px;
+      background: radial-gradient(circle at center, #ddd, #bbb);
+      border-radius: 4px;
+      line-height: 40px;
+      font-weight: bold;
+      color: #555;
+    }
+    .seats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+      gap: 12px;
+      padding: 16px;
+      justify-items: center;
+    }
+    .seat {
+      position: relative;
+      width: 48px; height: 48px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+    }
+    .seat:hover:not(.taken):not(.selected) {
+      transform: scale(1.1);
+      background: #019875;
+    }
+    .seat input { display: none; }
+    .seat.selected {
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(108,92,231,0.3);
+    }
+    .seat.taken {
+      background: var(--taken);
+      cursor: not-allowed;
+    }
+    .seat.taken::after {
+      content: '🔒';
+      position: absolute;
+      font-size: 14px;
+      top: 2px; right: 2px;
+    }
+    .btn-pay {
+      display: inline-block;
+      margin: 24px auto 32px;
+      padding: 14px 36px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+      background: linear-gradient(45deg, var(--accent), var(--primary));
+      border: none;
+      border-radius: 32px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-pay:disabled {
+      background: var(--taken);
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+    .btn-pay:not(:disabled):hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h2>رزرو بلیط برای «{{ movie.title }}»</h2>
+    </header>
+
+    {% if hall and hall.rows > 0 and hall.seats_per_row > 0 %}
+      <form id="reserveForm" method="POST" action="{{ url_for('reserve', movie_id=movie.id) }}">
+
+        <div class="screen">پرده سینما</div>
+
+        <div class="seats-grid">
+          {% for r in range(1, hall.rows + 1) %}
+            {% for s in range(1, hall.seats_per_row + 1) %}
+              {% set seat_id = r ~ '-' ~ s %}
+              {% set taken = (r, s) in reserved_seats %}
+              <label class="seat {% if taken %}taken{% endif %}">
+                <input type="checkbox"
+                       name="seats[]"
+                       value="{{ seat_id }}"
+                       {% if taken %}disabled{% endif %}>
+                {{ r }}-{{ s }}
+              </label>
+            {% endfor %}
+          {% endfor %}
+        </div>
+
+        <button id="payBtn"
+                class="btn-pay"
+                type="button"
+                disabled>
+          💳 پرداخت و رزرو
+        </button>
+      </form>
+    {% else %}
+      <p style="padding: 40px; color: #e74c3c;">
+        تنظیمات سالن انجام نشده یا ناقص است.
+      </p>
+    {% endif %}
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form   = document.getElementById('reserveForm');
+      const payBtn = document.getElementById('payBtn');
+      const seats  = document.querySelectorAll('.seat:not(.taken)');
+
+      seats.forEach(label => {
+        label.addEventListener('click', () => {
+          const input = label.querySelector('input');
+          input.checked = !input.checked;
+          label.classList.toggle('selected', input.checked);
+
+          payBtn.disabled = form.querySelectorAll('input[name="seats[]"]:checked').length === 0;
+        });
+      });
+
+      payBtn.addEventListener('click', () => {
+        const selected = form.querySelectorAll('input[name="seats[]"]:checked');
+        const count = selected.length;
+        if (!count) {
+          alert('لطفاً حداقل یک صندلی انتخاب کنید.');
+          return;
+        }
+        if (confirm(`شما ${count} صندلی انتخاب کرده‌اید. برای پرداخت ادامه دهیم؟`)) {
+          form.submit();
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

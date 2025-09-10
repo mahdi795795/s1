@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>ثبت فیلم جدید</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background-color: #f9f9f9;
+      padding: 30px;
+      text-align: center;
+    }
+    form {
+      margin-bottom: 40px;
+    }
+    input, button {
+      margin: 8px;
+      padding: 8px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #00ced1;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #009fa4;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 12px;
+      font-size: 17px;
+    }
+    a {
+      margin: 0 6px;
+      text-decoration: none;
+      color: #0077cc;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🎬 ثبت فیلم جدید</h2>
+
+  <form method="POST" enctype="multipart/form-data">
+    <input type="text" name="title" placeholder="نام فیلم" required><br>
+    <input type="file" name="poster" required><br>
+    <input type="number" name="price" placeholder="قیمت بلیط (تومان)" required><br>
+    <input type="date" name="release_date" required><br>
+    <input type="time" name="release_time" required><br>
+    <button type="submit">ثبت فیلم</button>
+  </form>
+
+  <hr>
+  <h3>📋 لیست فیلم‌های ثبت‌شده</h3>
+  <ul>
+    {% for movie in movies %}
+      <li>
+        🎞️ <strong>{{ movie.title }}</strong>
+        | <a href="{{ url_for('movie_detail', movie_id=movie.id) }}">جزئیات</a>
+        | <a href="{{ url_for('delete_movie', movie_id=movie.id) }}" style="color:red;">حذف</a>
+      </li>
+    {% else %}
+      <li>هیچ فیلمی ثبت نشده است.</li>
+    {% endfor %}
+  </ul>
+
+  <br><br>
+  <a href="{{ url_for('dashboard') }}">🔙 بازگشت به پنل مدیریت</a>
+
+</body>
+</html>

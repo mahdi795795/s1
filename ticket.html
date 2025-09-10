@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>بلیط شما</title>
+</head>
+<body style="text-align:center; font-family:sans-serif; background:#f5f5f5; padding:40px;">
+  <h2>بلیط شما آماده است</h2>
+  <img src="{{ url_for('static', filename='tickets/' + filename) }}" alt="تیکت">
+  <p><a href="{{ url_for('index') }}">🔙 بازگشت به صفحه اصلی</a></p>
+</body>
+</html>

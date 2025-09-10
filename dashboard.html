@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>داشبورد مدیریت</title>
+  <style>
+    body {
+      font-family: 'Tahoma', sans-serif;
+      direction: rtl;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 20px;
+    }
+    .dashboard-container {
+      max-width: 1000px;
+      margin: auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .dashboard-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    .dashboard-button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    .dashboard-button:hover {
+      background-color: #0056b3;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #dee2e6;
+      text-align: center;
+    }
+    th {
+      background-color: #e9ecef;
+    }
+    .movie-actions a {
+      margin: 0 5px;
+      text-decoration: none;
+      color: #007bff;
+    }
+    .movie-actions a:hover {
+      text-decoration: underline;
+    }
+    .accounting-section {
+      margin-top: 40px;
+    }
+    .accounting-form {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .accounting-form input {
+      padding: 5px;
+      margin: 0 5px;
+      width: 120px;
+    }
+    .accounting-summary {
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <h1>داشبورد مدیریت فیلم‌ها</h1>
+    <div class="dashboard-buttons">
+      <a href="{{ url_for('add_movie') }}" class="dashboard-button">افزودن فیلم جدید</a>
+      <a href="{{ url_for('settings_dashboard') }}" class="dashboard-button">تنظیمات سالن</a>
+      <a href="{{ url_for('stats') }}" class="dashboard-button">آمار</a>
+      <a href="#accounting" class="dashboard-button" style="background-color: #28a745;">حسابداری</a>
+      <a href="{{ url_for('logout') }}" class="dashboard-button" style="background-color: #dc3545;">خروج</a>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>عنوان</th>
+          <th>ژانر</th>
+          <th>مدت زمان</th>
+          <th>تاریخ اکران (شمسی)</th>
+          <th>وضعیت</th>
+          <th>عملیات</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in movies %}
+        <tr>
+          <td>{{ m.title }}</td>
+          <td>{{ m.genre }}</td>
+          <td>{{ m.duration }} دقیقه</td>
+          <td>{{ m.release_date_jalali }}</td>
+          <td>{{ 'فعال' if m.active else 'غیرفعال' }}</td>
+          <td class="movie-actions">
+            <a href="{{ url_for('edit_movie', movie_id=m.id) }}">ویرایش</a>
+            <a href="{{ url_for('delete_movie', movie_id=m.id) }}" onclick="return confirm('آیا مطمئن هستید؟')">حذف</a>
+            <a href="{{ url_for('toggle_movie', movie_id=m.id) }}">{{ 'غیرفعال‌سازی' if m.active else 'فعال‌سازی' }}</a>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="6">هیچ فیلمی ثبت نشده است.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- بخش حسابداری -->
+      <h2 style="text-align:center;">گزارش حسابداری</h2>
+      <form method="GET" action="{{ url_for('dashboard') }}" class="accounting-form">
+        از تاریخ: <input type="text" name="start_date" placeholder="1402/01/01">
+        تا تاریخ: <input type="text" name="end_date" placeholder="1402/12/29">
+        <button type="submit" class="dashboard-button">نمایش درآمد</button>
+        <button onclick="window.print()" type="button" class="dashboard-button" style="background-color: #6c757d;">چاپ</button>
+      </form>
+
+      <table>
+        <thead>
+          <tr>
+            <th>عنوان فیلم</th>
+            <th>مبلغ پرداختی (تومان)</th>
+            <th>تاریخ پرداخت (شمسی)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in payments %}
+          <tr>
+            <td>{{ p.movie_title }}</td>
+            <td>{{ "{:,}".format(p.amount) }}</td>
+            <td>{{ p.jalali_date }}</td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="3">پرداختی ثبت نشده است.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="accounting-summary">
+        جمع کل درآمد: {{ "{:,}".format(total_income) }} تومان
+      </div>
+    </div>
+  </div>
+</body>
+</html>

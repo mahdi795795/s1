@@ -1,0 +1,104 @@
+<body style="margin:0; padding:0; font-family:'Vazirmatn', sans-serif; background: linear-gradient(135deg, #fefefe, #e6f0ff);">
+
+  <h2 style="text-align:center; margin-top:30px; font-size:28px; color:#333;">🎟️ تنظیمات سالن سینما</h2>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul style="color: green; text-align: center; list-style: none; padding: 0;">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <form method="post" action="{{ url_for('settings_dashboard') }}" style="max-width: 500px; margin: auto; padding: 20px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+    <input type="hidden" name="action" value="update_hall" />
+
+    <div style="margin-bottom: 20px;">
+      <label for="rows" style="display: block; margin-bottom: 8px; font-weight: bold;">تعداد ردیف‌ها:</label>
+      <input
+        id="rows"
+        type="number"
+        name="rows"
+        value="{{ hall.rows }}"
+        min="1"
+        max="50"
+        required
+        style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
+      />
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <label for="seats" style="display: block; margin-bottom: 8px; font-weight: bold;">تعداد صندلی در هر ردیف:</label>
+      <input
+        id="seats"
+        type="number"
+        name="seats"
+        value="{{ hall.seats_per_row }}"
+        min="1"
+        max="30"
+        required
+        style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
+      />
+    </div>
+
+    <button
+      type="submit"
+      style="width: 100%; padding: 14px; background-color: #ff4d4f; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.3s;"
+      onmouseover="this.style.backgroundColor='#d9363e'"
+      onmouseout="this.style.backgroundColor='#ff4d4f'"
+    >
+      💾 ذخیره تنظیمات سالن
+    </button>
+  </form>
+
+  {% if hall and hall.rows > 0 and hall.seats_per_row > 0 %}
+    <h3 style="text-align:center; margin-top:50px; font-size:24px; color:#333;">🪑 چیدمان صندلی‌ها</h3>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 10px;">
+      {% for r in range(1, hall.rows + 1) %}
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;">
+          {% for s in range(1, hall.seats_per_row + 1) %}
+            {% set seat_number = (r - 1) * hall.seats_per_row + s %}
+            <div style="
+              width: 50px;
+              height: 50px;
+              background-color: #ffffff;
+              border: 2px solid #007bff;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 14px;
+              font-weight: bold;
+              color: #007bff;
+              box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+              position: relative;
+            ">
+              {{ seat_number }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- دکمه برگشت -->
+  <div style="text-align:center; margin-top:40px;">
+    <a href="{{ url_for('dashboard') }}" style="
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #00b894;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: background 0.3s;
+    " onmouseover="this.style.backgroundColor='#00997a'" onmouseout="this.style.backgroundColor='#00b894'">
+      ⬅️ بازگشت به پنل مدیریت
+    </a>
+  </div>
+
+</body>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>آمار فروش فیلم‌ها</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      font-family: Vazir, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+    form {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    input[type="date"], button {
+      padding: 8px 12px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+      text-decoration: none;
+      color: #007bff;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📊 آمار فروش فیلم‌ها</h1>
+
+    <form method="get" action="{{ url_for('stats') }}">
+      <label>از تاریخ:</label>
+      <input type="date" name="start_date" value="{{ start_date }}">
+      <label>تا تاریخ:</label>
+      <input type="date" name="end_date" value="{{ end_date }}">
+      <button type="submit">اعمال فیلتر</button>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>عنوان فیلم</th>
+          <th>تاریخ اکران</th>
+          <th>تعداد نفرات</th>
+          <th>درآمد (تومان)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for id, title, date, price, visitors, revenue in stats %}
+        <tr>
+          <td>{{ title }}</td>
+          <td>{{ date }}</td>
+          <td>{{ visitors }}</td>
+          <td>{{ "{:,}".format(revenue) }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="4">اطلاعاتی برای بازهٔ انتخاب‌شده وجود ندارد.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <a href="{{ url_for('dashboard') }}" class="back-link">« بازگشت به داشبورد</a>
+  </div>
+</body>
+</html>

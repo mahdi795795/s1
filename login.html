@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>ورود مدیر</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Vazirmatn', sans-serif;
+      background: linear-gradient(to bottom right, #dfe6e9, #b2bec3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-box {
+      background: #ffffff;
+      padding: 30px 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 360px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #2d3436;
+      font-size: 24px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #2d3436;
+      text-align: right;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 18px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #0984e3;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #74b9ff;
+    }
+    .error {
+      color: #d63031;
+      background: #ffe6e6;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    @media (max-width: 480px) {
+      .login-box {
+        padding: 20px;
+      }
+      h2 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-box">
+    <h2>ورود به پنل مدیریت</h2>
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+    <form method="POST">
+      <label for="username">نام کاربری</label>
+      <input type="text" name="username" id="username" placeholder="مثلاً: admin" required>
+
+      <label for="password">رمز عبور</label>
+      <input type="password" name="password" id="password" placeholder="رمز محرمانه..." required>
+
+      <button type="submit">ورود</button>
+    </form>
+  </div>
+
+</body>
+</html>

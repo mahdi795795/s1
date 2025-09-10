@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>✅ پرداخت موفق</title>
+  <style>
+    body {
+      font-family: 'Tahoma', sans-serif;
+      background: #f0fff0;
+      direction: rtl;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #2ecc71;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .info {
+      font-size: 18px;
+      margin: 10px 0;
+      color: #333;
+    }
+
+    .ticket-link {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 24px;
+      background-color: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      box-shadow: 0 0 8px rgba(52, 152, 219, 0.4);
+      transition: 0.3s;
+    }
+
+    .ticket-link:hover {
+      background-color: #2980b9;
+      transform: scale(1.05);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 16px;
+      color: #555;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      color: #0077cc;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h2>✅ پرداخت با موفقیت انجام شد</h2>
+
+  <div class="info">🎬 فیلم: {{ movie.title }}</div>
+  <div class="info">📅 تاریخ: {{ movie.release_date }} | ⏰ ساعت: {{ movie.release_time }}</div>
+  <div class="info">🪑 صندلی‌های انتخاب‌شده: {{ seat_text }}</div>
+
+  <a href="{{ url_for('ticket', movie_id=movie.id) }}" class="ticket-link">📥 دانلود بلیط</a><br>
+  <a href="{{ url_for('cinema') }}" class="back-link">🔙 بازگشت به لیست فیلم‌ها</a>
+</body>
+</html>

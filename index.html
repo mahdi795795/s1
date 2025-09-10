@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>صفحه اصلی</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+  <style>
+    .hadith-bar {
+      width: 90%;
+      margin: 20px auto;
+      padding: 10px 16px;
+      background-color: rgba(255,255,255,0.7);
+      backdrop-filter: blur(4px);
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: 600;
+      color: #004d40;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .hadith-marquee span {
+      display: inline-block;
+      padding: 0 40px;
+    }
+    .hadith-marquee {
+      display: inline-block;
+      white-space: nowrap;
+      animation: scrollHadith 80s linear infinite;
+    }
+    @keyframes scrollHadith {
+      0%   { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .hex-buttons a {
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- نوار اسلیمی بالا -->
+  <div class="top-bar"></div>
+<!-- نوار چرخشی بالا -->
+<div class="scroll-bar">
+  <marquee behavior="scroll" direction="right">به مجموعه فرهنگی مسجدالزهرا(س) خوش آمدی</marquee>
+</div>
+
+  <!-- دکمه‌های برجسته با آیکن‌های آنلاین -->
+  <div class="hex-buttons">
+    <div class="octagon-button">
+      <img src="https://cdn-icons-png.flaticon.com/512/681/681494.png"
+           class="btn-icon" alt="آموزش و تربیت"/>
+      <div class="btn-text">آموزش و تربیت</div>
+    </div>
+    <div class="octagon-button">
+      <img src="https://cdn-icons-png.flaticon.com/512/1077/1077063.png"
+           class="btn-icon" alt="هیئت امنا"/>
+      <div class="btn-text">هیئت امنا</div>
+    </div>
+    <a href="{{ url_for('cinema') }}">
+      <div class="octagon-button">
+        <img src="https://cdn-icons-png.flaticon.com/512/1179/1179069.png"
+             class="btn-icon" alt="سینما"/>
+        <div class="btn-text">سینما</div>
+      </div>
+    </a>
+    <div class="octagon-button">
+      <img src="https://cdn-icons-png.flaticon.com/512/3062/3062634.png"
+           class="btn-icon" alt="مرکز مشاوره"/>
+      <div class="btn-text">مرکز مشاوره</div>
+    </div>
+    <div class="octagon-button">
+      <img src="https://cdn-icons-png.flaticon.com/512/1827/1827504.png"
+           class="btn-icon" alt="اطلاع‌رسانی"/>
+      <div class="btn-text">اطلاع‌رسانی</div>
+    </div>
+    <div class="octagon-button">
+      <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png"
+           class="btn-icon" alt="نوجوانانه"/>
+      <div class="btn-text">نوجوانانه</div>
+    </div>
+  </div>
+
+  <!-- نوار چرخشی پایین با احادیث نهج‌البلاغه -->
+  <div class="hadith-bar">
+    <div class="hadith-marquee">
+      <span>امام علی جانمان فرمودند: ارزش هر کس به اندازه کاری است که خوب انجام می‌دهد</span>
+      <span>امام علی جانمان فرمودند: زبان، قلب را نمایان می‌سازد</span>
+      <span>امام علی جانمان فرمودند: فرصت‌ها چون ابر می‌گذرند، آن‌ها را غنیمت شمار</span>
+      <span>امام علی جانمان فرمودند: کسی که خود را شناخت، خدا را شناخت</span>
+      <span>امام علی جانمان فرمودند: سکوت، زینت عاقل و پوشش جاهل است</span>
+      <span>امام علی جانمان فرمودند: بهترین بی‌نیازی، ترک آرزوهاست</span>
+      <span>امام علی جانمان فرمودند: علم، سلطنت است؛ هر که آن را یابد، فرمانروایی کند</span>
+      <span>امام علی جانمان فرمودند: دل‌ها خسته می‌شوند، آن‌ها را با حکمت تازه کنید</span>
+      <span>امام علی جانمان فرمودند: کسی که به مردم نیکی کند، دل‌ها را به دست آورد</span>
+      <span>امام علی جانمان فرمودند: هر که در دلش نیت خیر باشد، خدا او را یاری کند</span>
+    </div>
+  </div>
+<!-- لوگوی اینماد -->
+<div style="width:100%; text-align:center; margin:20px 0;">
+  <a referrerpolicy="origin" target="_blank" href="https://trustseal.enamad.ir/?id=631068&Code=fJsNqZtlm494LER8Cx2Gsejki0r2RDws">
+    <img referrerpolicy="origin" src="https://trustseal.enamad.ir/logo.aspx?id=631068&Code=fJsNqZtlm494LER8Cx2Gsejki0r2RDws" alt="نماد اعتماد الکترونیکی" style="cursor:pointer; max-width:120px;">
+  </a>
+</div>
+  <!-- نوار اسلیمی پایین -->
+  <div class="bottom-bar"></div>
+
+</body>
+</html>
